@@ -22,8 +22,8 @@ body {
 }
 
 #robot img {
-    width: 200px; /* Adjust size as needed */
-    height: 200px; /* Adjust size as needed */
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
     margin-bottom: 20px;
     animation: float 3s ease-in-out infinite;
     filter: drop-shadow(0 0 10px #0f0) drop-shadow(0 0 20px #0f0) drop-shadow(0 0 30px #0f0);
