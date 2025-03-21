@@ -109,6 +109,7 @@ function speakContent() {
 
 // Show Quiz Answer Buttons
 function showQuizAnswers(options, correctIndex) {
+    console.log("Showing quiz answers:", options); // Debugging
     const quizAnswers = document.getElementById('quiz-answers');
     quizAnswers.innerHTML = ""; // Clear previous buttons
 
@@ -128,11 +129,11 @@ function checkAnswer(selectedIndex, correctIndex) {
 
     if (selectedIndex === correctIndex) {
         document.getElementById('display').innerText = "Correct! 🎉";
-        speak("Correct! 🎉");
+        speak("Correct! 🎉"); // Speak the result
         successSound.play();
     } else {
         document.getElementById('display').innerText = "Wrong! ❌";
-        speak("Wrong! ❌");
+        speak("Wrong! ❌"); // Speak the result
         alertSound.play();
     }
 }
@@ -160,13 +161,15 @@ async function submitDoubt() {
         const ddgResponse = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(doubtText)}&format=json`);
         const ddgData = await ddgResponse.json();
         
+        let answerText = "";
         if (ddgData.AbstractText) {
-            document.getElementById('display').innerText = ddgData.AbstractText;
-            speak(ddgData.AbstractText); // Speak the answer
+            answerText = ddgData.AbstractText;
         } else {
-            document.getElementById('display').innerText = "Sorry, I couldn't find an answer.";
-            speak("Sorry, I couldn't find an answer."); // Speak the error
+            answerText = "Sorry, I couldn't find an answer.";
         }
+
+        document.getElementById('display').innerText = answerText;
+        speak(answerText); // Speak the answer
     } catch {
         document.getElementById('display').innerText = "Connection error!";
         speak("Connection error!"); // Speak the error
