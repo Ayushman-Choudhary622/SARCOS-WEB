@@ -38,30 +38,24 @@ const lifeLessonsDB = [
 let currentMode = null;
 let currentIndex = 0;
 
-// Text-to-Speech Function
-function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    window.speechSynthesis.speak(utterance);
-}
-
 // Mode Handlers
 function setMode(mode) {
     console.log("Mode set to:", mode); // Debugging
     currentMode = mode;
     currentIndex = 0;
 
+    // Show/hide doubt input
+    const doubtInput = document.getElementById('doubt-input');
+    if (mode === 'doubt') {
+        doubtInput.classList.remove('hidden');
+    } else {
+        doubtInput.classList.add('hidden');
+    }
+
     // Check if the audio element exists
     const modeSound = document.getElementById('mode');
     if (modeSound) {
-        console.log("Audio element found:", modeSound); // Debugging
-        modeSound.play() // Play the sound
-            .then(() => console.log("Sound played successfully")) // Debugging
-            .catch((error) => console.error("Error playing sound:", error)); // Debugging
-    } else {
-        console.error("Audio element with id 'mode' not found!");
+        modeSound.play(); // Play the sound
     }
 
     speakContent();
@@ -89,12 +83,44 @@ function speakContent() {
             content = lifeLessonsDB[currentIndex % lifeLessonsDB.length];
             break;
         case 'doubt':
-            content = "Ask your question...";
+            content = "Type your doubt in the box below and click Submit.";
             break;
     }
 
     document.getElementById('display').innerText = content;
-    speak(content); // Speak the content
+}
+
+// Navigation Functions
+function next() {
+    if (currentMode === null) return;
+    currentIndex++;
+    speakContent();
+}
+
+function previous() {
+    if (currentMode === null) return;
+    currentIndex--;
+    if (currentIndex < 0) currentIndex = 0; // Prevent negative index
+    speakContent();
+}
+
+// Doubt Mode Handler
+async function submitDoubt() {
+    const doubtText = document.getElementById('doubt-text').value;
+    if (!doubtText) return;
+
+    try {
+        const ddgResponse = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(doubtText)}&format=json`);
+        const ddgData = await ddgResponse.json();
+        
+        if (ddgData.AbstractText) {
+            document.getElementById('display').innerText = ddgData.AbstractText;
+        } else {
+            document.getElementById('display').innerText = "Sorry, I couldn't find an answer.";
+        }
+    } catch {
+        document.getElementById('display').innerText = "Connection error!";
+    }
 }
 
 // Initialize
