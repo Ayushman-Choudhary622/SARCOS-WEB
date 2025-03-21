@@ -56,7 +56,10 @@ function setMode(mode) {
     // Check if the audio element exists
     const modeSound = document.getElementById('mode');
     if (modeSound) {
-        modeSound.play(); // Play the sound
+        console.log("Audio element found:", modeSound); // Debugging
+        modeSound.play() // Play the sound
+            .then(() => console.log("Sound played successfully")) // Debugging
+            .catch((error) => console.error("Error playing sound:", error)); // Debugging
     } else {
         console.error("Audio element with id 'mode' not found!");
     }
