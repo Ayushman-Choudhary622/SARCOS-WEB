@@ -38,18 +38,33 @@ const lifeLessonsDB = [
 let currentMode = null;
 let currentIndex = 0;
 
+// Text-to-Speech Function
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+}
+
 // Mode Handlers
 function setMode(mode) {
     console.log("Mode set to:", mode); // Debugging
     currentMode = mode;
     currentIndex = 0;
 
-    // Show/hide doubt input
+    // Show/hide doubt input and quiz answers
     const doubtInput = document.getElementById('doubt-input');
+    const quizAnswers = document.getElementById('quiz-answers');
     if (mode === 'doubt') {
         doubtInput.classList.remove('hidden');
+        quizAnswers.classList.add('hidden');
+    } else if (mode === 'quiz') {
+        doubtInput.classList.add('hidden');
+        quizAnswers.classList.remove('hidden');
     } else {
         doubtInput.classList.add('hidden');
+        quizAnswers.classList.add('hidden');
     }
 
     // Check if the audio element exists
@@ -70,7 +85,8 @@ function speakContent() {
             break;
         case 'quiz':
             const q = quizDB[currentIndex % quizDB.length];
-            content = `${q.question}. Options are: ${q.options.join(', ')}`;
+            content = q.question;
+            showQuizAnswers(q.options, q.answer);
             break;
         case 'facts':
             content = factsDB[currentIndex % factsDB.length];
@@ -88,6 +104,37 @@ function speakContent() {
     }
 
     document.getElementById('display').innerText = content;
+    speak(content); // Speak the content
+}
+
+// Show Quiz Answer Buttons
+function showQuizAnswers(options, correctIndex) {
+    const quizAnswers = document.getElementById('quiz-answers');
+    quizAnswers.innerHTML = ""; // Clear previous buttons
+
+    options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'answer-btn';
+        button.innerText = option;
+        button.onclick = () => checkAnswer(index, correctIndex);
+        quizAnswers.appendChild(button);
+    });
+}
+
+// Check Quiz Answer
+function checkAnswer(selectedIndex, correctIndex) {
+    const alertSound = document.getElementById('alert');
+    const successSound = document.getElementById('success');
+
+    if (selectedIndex === correctIndex) {
+        document.getElementById('display').innerText = "Correct! 🎉";
+        speak("Correct! 🎉");
+        successSound.play();
+    } else {
+        document.getElementById('display').innerText = "Wrong! ❌";
+        speak("Wrong! ❌");
+        alertSound.play();
+    }
 }
 
 // Navigation Functions
@@ -115,11 +162,14 @@ async function submitDoubt() {
         
         if (ddgData.AbstractText) {
             document.getElementById('display').innerText = ddgData.AbstractText;
+            speak(ddgData.AbstractText); // Speak the answer
         } else {
             document.getElementById('display').innerText = "Sorry, I couldn't find an answer.";
+            speak("Sorry, I couldn't find an answer."); // Speak the error
         }
     } catch {
         document.getElementById('display').innerText = "Connection error!";
+        speak("Connection error!"); // Speak the error
     }
 }
 
