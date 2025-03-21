@@ -49,9 +49,18 @@ function speak(text) {
 
 // Mode Handlers
 function setMode(mode) {
+    console.log("Mode set to:", mode); // Debugging
     currentMode = mode;
     currentIndex = 0;
-    document.getElementById('mode').play(); // Play mode sound
+
+    // Check if the audio element exists
+    const modeSound = document.getElementById('mode');
+    if (modeSound) {
+        modeSound.play(); // Play the sound
+    } else {
+        console.error("Audio element with id 'mode' not found!");
+    }
+
     speakContent();
 }
 
@@ -85,56 +94,5 @@ function speakContent() {
     speak(content); // Speak the content
 }
 
-// Voice Control
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.continuous = true;
-recognition.lang = 'en-US';
-
-recognition.onresult = async (e) => {
-    const transcript = e.results[e.results.length - 1][0].transcript.toLowerCase();
-    console.log("Voice input detected:", transcript);
-
-    if (currentMode === null) return;
-
-    if (transcript.includes('next')) {
-        currentIndex++;
-        speakContent();
-    } else if (currentMode === 'quiz') {
-        const q = quizDB[currentIndex % quizDB.length];
-        const answer = parseInt(transcript) - 1;
-        const correct = answer === q.answer;
-        if (correct) {
-            speak("Correct! 🎉");
-            currentIndex++;
-            speakContent();
-        } else {
-            speak("Wrong! ❌");
-        }
-    } else if (currentMode === 'doubt') {
-        handleQuestion(transcript);
-    }
-};
-
-// Question Answering System (DuckDuckGo)
-async function handleQuestion(question) {
-    try {
-        const ddgResponse = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(question)}&format=json`);
-        const ddgData = await ddgResponse.json();
-        
-        if (ddgData.AbstractText) {
-            showAnswer(ddgData.AbstractText);
-        } else {
-            showAnswer("Sorry, I couldn't find an answer.");
-        }
-    } catch {
-        showAnswer("Connection error!");
-    }
-}
-
-function showAnswer(text) {
-    document.getElementById('display').innerText = text;
-    speak(text); // Speak the answer
-}
-
 // Initialize
-recognition.start();
+console.log("App initialized"); // Debugging
