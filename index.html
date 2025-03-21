@@ -6,15 +6,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="robot">🤖</div>
-    <div id="display">Press a Button to Start!</div>
-    <div>
-        <button class="mode-btn" onclick="setMode('story')">Story Mode</button>
-        <button class="mode-btn" onclick="setMode('quiz')">Quiz Mode</button>
-        <button class="mode-btn" onclick="setMode('facts')">Facts Mode</button>
-        <button class="mode-btn" onclick="setMode('language')">Language Mode</button>
-        <button class="mode-btn" onclick="setMode('doubt')">Doubt Mode</button>
-        <button class="mode-btn" onclick="setMode('life')">Life Lessons Mode</button>
+    <div class="container">
+        <div id="robot">🤖</div>
+        <div id="display">Press a Button to Start!</div>
+        <div class="buttons">
+            <button class="mode-btn" onclick="setMode('story')">Story Mode</button>
+            <button class="mode-btn" onclick="setMode('quiz')">Quiz Mode</button>
+            <button class="mode-btn" onclick="setMode('facts')">Facts Mode</button>
+            <button class="mode-btn" onclick="setMode('language')">Language Mode</button>
+            <button class="mode-btn" onclick="setMode('doubt')">Doubt Mode</button>
+            <button class="mode-btn" onclick="setMode('life')">Life Lessons Mode</button>
+        </div>
+        <div class="navigation">
+            <button class="nav-btn" onclick="previous()">Previous</button>
+            <button class="nav-btn" onclick="next()">Next</button>
+        </div>
+        <div id="doubt-input" class="hidden">
+            <input type="text" id="doubt-text" placeholder="Type your doubt here...">
+            <button class="nav-btn" onclick="submitDoubt()">Submit</button>
+        </div>
     </div>
 
     <!-- Add the audio element -->
