@@ -7,7 +7,9 @@
 </head>
 <body>
     <div class="container">
-        <div id="robot">🤖</div>
+        <div id="robot">
+            <img src="assets/images/my-robot.png" alt="Robot">
+        </div>
         <div id="display">Press a Button to Start!</div>
         <div class="buttons">
             <button class="mode-btn" onclick="setMode('story')">Story Mode</button>
@@ -25,9 +27,14 @@
             <input type="text" id="doubt-text" placeholder="Type your doubt here...">
             <button class="nav-btn" onclick="submitDoubt()">Submit</button>
         </div>
+        <div id="quiz-answers" class="hidden">
+            <!-- Answer buttons will be dynamically added here -->
+        </div>
     </div>
 
     <!-- Add the audio element -->
     <audio id="mode" src="assets/sounds/mode.mp3"></audio>
+    <audio id="alert" src="assets/sounds/alert.mp3"></audio>
+    <audio id="success" src="assets/sounds/success.mp3"></audio>
 </body>
 </html>
