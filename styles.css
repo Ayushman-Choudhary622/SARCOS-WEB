@@ -1,33 +1,106 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background: #000;
-    color: #0f0;
-    text-align: center;
     margin: 0;
     padding: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #robot {
-    font-size: 3em;
-    margin-top: 20px;
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 #display {
     font-size: 1.5em;
-    margin: 20px;
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 .mode-btn {
-    display: inline-block;
-    margin: 10px;
     padding: 10px 20px;
     background: #333;
     color: #0f0;
     border: 2px solid #0f0;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s, color 0.3s;
 }
 
 .mode-btn:hover {
     background: #0f0;
     color: #000;
+}
+
+.navigation {
+    margin-top: 20px;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    background: #444;
+    color: #fff;
+    border: 2px solid #0f0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 0 10px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.nav-btn:hover {
+    background: #0f0;
+    color: #000;
+}
+
+#doubt-input {
+    margin-top: 20px;
+}
+
+#doubt-input.hidden {
+    display: none;
+}
+
+#doubt-text {
+    padding: 10px;
+    font-size: 1em;
+    border: 2px solid #0f0;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    width: 300px;
+}
+
+#doubt-text::placeholder {
+    color: #ccc;
 }
